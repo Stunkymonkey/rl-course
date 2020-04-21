@@ -28,24 +28,58 @@ def greedy(bandit, timesteps):
     possible_arms = range(bandit.n_arms)
 
     # TODO: init variables (rewards, n_plays, Q) by playing each arm once
+    for i in possible_arms:
+        rewards[i] = bandit.play_arm(i)
+        n_plays[i] += 1
 
+    Q[np.argmax(rewards)] += np.max(rewards)
     # Main loop
     while bandit.total_played < timesteps:
         # This example shows how to play a random arm:
-        a = random.choice(possible_arms)
-        reward_for_a = bandit.play_arm(a)
         # TODO: instead do greedy action selection
         # TODO: update the variables (rewards, n_plays, Q) for the selected arm
+        arm = np.argmax(Q)
+        rewards[arm] = bandit.play_arm(arm)
+        n_plays[arm] += 1
+        old_reward = Q[np.argmax(rewards)]
+        Q[np.argmax(rewards)] = old_reward + ((np.max(rewards) - old_reward) / n_plays[arm])
+
 
 
 def epsilon_greedy(bandit, timesteps):
     # TODO: epsilon greedy action selection (you can copy your code for greedy as a starting point)
+    rewards = np.zeros(bandit.n_arms)
+    n_plays = np.zeros(bandit.n_arms)
+    Q = np.zeros(bandit.n_arms)
+    possible_arms = range(bandit.n_arms)
+    kappa = 0.1
+    # TODO: init variables (rewards, n_plays, Q) by playing each arm once
+    for i in possible_arms:
+        rewards[i] = bandit.play_arm(i)
+        n_plays[i] += 1
+
+    Q[np.argmax(rewards)] += np.max(rewards)
+    # Main loop
     while bandit.total_played < timesteps:
-        reward_for_a = bandit.play_arm(0)  # Just play arm 0 as placeholder
-
-
+        # This example shows how to play a random arm:
+        # TODO: instead do greedy action selection
+        # TODO: update the variables (rewards, n_plays, Q) for the selected arm
+        
+        r = random.uniform(0,1)
+        if (r < kappa):
+            arm = random.choice(possible_arms)
+            rewards[arm] = bandit.play_arm(arm)
+        else:
+            arm = np.argmax(Q)
+            rewards[arm] = bandit.play_arm(arm)
+        n_plays[arm] += 1
+        old_reward = Q[np.argmax(rewards)]
+        Q[np.argmax(rewards)] = old_reward + ((np.max(rewards) - old_reward) / n_plays[arm])
+        
+# Exercise 2c: epsilon greedy search performs better, as it also includes exploration and not only expoitation 
+# Exercise 2d: decay epsilon over time
 def main():
-    n_episodes = 500  # TODO: set to 10000 to decrease noise in plot
+    n_episodes = 10000  # TODO: set to 10000 to decrease noise in plot
     n_timesteps = 1000
     rewards_greedy = np.zeros(n_timesteps)
     rewards_egreedy = np.zeros(n_timesteps)

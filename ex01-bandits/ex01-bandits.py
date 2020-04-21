@@ -1,9 +1,12 @@
+#! /usr/bin/env python
+
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 
 
 class GaussianBandit:
+
     def __init__(self):
         self._arm_means = np.random.uniform(0., 1., 10)  # Sample some means
         self.n_arms = len(self._arm_means)
@@ -86,7 +89,7 @@ def main():
 
     for i in range(n_episodes):
         if i % 100 == 0:
-            print ("current episode: " + str(i))
+            print("current episode: " + str(i))
 
         b = GaussianBandit()  # initializes a random bandit
         greedy(b, n_timesteps)
@@ -99,9 +102,11 @@ def main():
     rewards_greedy /= n_episodes
     rewards_egreedy /= n_episodes
     plt.plot(rewards_greedy, label="greedy")
-    print("Total reward of greedy strategy averaged over " + str(n_episodes) + " episodes: " + str(np.sum(rewards_greedy)))
+    print("Total reward of greedy strategy averaged over " +
+          str(n_episodes) + " episodes: " + str(np.sum(rewards_greedy)))
     plt.plot(rewards_egreedy, label="e-greedy")
-    print("Total reward of epsilon greedy strategy averaged over " + str(n_episodes) + " episodes: " + str(np.sum(rewards_egreedy)))
+    print("Total reward of epsilon greedy strategy averaged over " +
+          str(n_episodes) + " episodes: " + str(np.sum(rewards_egreedy)))
     plt.legend()
     plt.xlabel("Timesteps")
     plt.ylabel("Reward")

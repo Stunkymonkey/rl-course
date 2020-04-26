@@ -22,14 +22,6 @@
 \usepackage{array}
 \usepackage{bbold}
 
-\usepackage{changepage,titlesec}
-\titleformat{\section}[block]{\bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}[block]{}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}[block]{}{\thesubsubsection}{1em}{}
-\titlespacing*{\subsection} {2em}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-\titlespacing*{\subsubsection} {3em}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-\setcounter{MaxMatrixCols}{20}
-
 \title{\textbf{Exercise 1}}
 
 \begin{document}
@@ -54,5 +46,20 @@
 \end{enumerate}
 
 \section*{Task 2 - Action Selection Strategies}
+
+\subsection*{c)}
+
+epsilon greedy search performs better, as it also includes exploration and not only exploitation.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\linewidth]{bandit_strategies}
+	\caption{Output bandit\_strategies.eps}
+	\label{fig:banditstrategies}
+\end{figure}
+
+
+\subsection*{d)} 
+decay epsilon over time.
 
 \end{document}

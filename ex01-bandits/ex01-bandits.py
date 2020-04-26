@@ -48,14 +48,13 @@ def greedy(bandit, timesteps):
         Q[np.argmax(rewards)] = old_reward + ((np.max(rewards) - old_reward) / n_plays[arm])
 
 
-
 def epsilon_greedy(bandit, timesteps):
     # TODO: epsilon greedy action selection (you can copy your code for greedy as a starting point)
     rewards = np.zeros(bandit.n_arms)
     n_plays = np.zeros(bandit.n_arms)
     Q = np.zeros(bandit.n_arms)
     possible_arms = range(bandit.n_arms)
-    kappa = 0.1
+    epsilon = 0.1
     # TODO: init variables (rewards, n_plays, Q) by playing each arm once
     for i in possible_arms:
         rewards[i] = bandit.play_arm(i)
@@ -67,9 +66,9 @@ def epsilon_greedy(bandit, timesteps):
         # This example shows how to play a random arm:
         # TODO: instead do greedy action selection
         # TODO: update the variables (rewards, n_plays, Q) for the selected arm
-        
-        r = random.uniform(0,1)
-        if (r < kappa):
+
+        r = random.uniform(0, 1)
+        if (r < epsilon):
             arm = random.choice(possible_arms)
             rewards[arm] = bandit.play_arm(arm)
         else:
@@ -78,9 +77,8 @@ def epsilon_greedy(bandit, timesteps):
         n_plays[arm] += 1
         old_reward = Q[np.argmax(rewards)]
         Q[np.argmax(rewards)] = old_reward + ((np.max(rewards) - old_reward) / n_plays[arm])
-        
-# Exercise 2c: epsilon greedy search performs better, as it also includes exploration and not only expoitation 
-# Exercise 2d: decay epsilon over time
+
+
 def main():
     n_episodes = 10000  # TODO: set to 10000 to decrease noise in plot
     n_timesteps = 1000

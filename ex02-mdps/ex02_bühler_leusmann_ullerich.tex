@@ -11,7 +11,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[R]{2973140 - Felix Bühler  \\ 2893121 - Jan Leusmann \\  3141241 - Jamie Ullerich}
+\fancyhead[R]{Felix Bühler - 2973140\\ Jan Leusmann - 2893121\\  Jamie Ullerich - 3141241}
 \fancyhead[L]{Reinforcement Learning \\ SS 2020}
 \renewcommand{\headrulewidth}{0.5pt}
 \usepackage{tikz}
@@ -29,6 +29,28 @@
 \thispagestyle{fancy}
 
 \section*{Task 1 - Formulating Problems}
+
+\begin{enumerate}
+	\item[a)] 
+	The states would be the configuration of the chess pieces on the board. 
+	These are discrete and finite states, but not every sate can be reached sometimes, depending on the current configuration of pieces.
+	The actions are the specific actions which all the pieces in the current state can perform. 
+	These are discrete and finite, as well. 
+	For rewards, it would be good to punish when a piece is removed and reward actions which lead to check or other movements which may lead to winning.
+	\item[b)] 
+	As states, we would use the position of the arm. 
+	These are therefore discrete and finite.
+	This way, the actions would be the movement of the arm, which are finite as well. 
+	A positive reward should be given if the robot can pick objects and performs fast, this means taking a long time or dropping objects would be punished with a negative reward. 
+	\item[c)] 
+	There could be two discrete states, stable and unstable. 
+	These indicate whether the drone must be stabilised or not. 
+	As actions, the movement of the drone, e.g. left, right, up, down, forward, back could be used. 
+	These are finite and can be continuous since every position is possible. 
+	A positive reward can be given if the drone flies balanced and a negative one if it needs a lot of time to balance out. 
+	\item[d)] 
+	
+\end{enumerate}
 
 \section*{Task 2 - Value Functions}
 

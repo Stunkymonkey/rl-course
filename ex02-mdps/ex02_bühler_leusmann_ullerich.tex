@@ -38,6 +38,7 @@
 	The actions are the specific actions which all the pieces in the current state can perform. 
 	These are discrete and finite, as well. 
 	For rewards, it would be good to punish when a piece is removed and reward actions which lead to check or other movements which may lead to winning.
+	It is important, that there is a great reward for actual winning to avoid that the agent finds a way to for example only remove pieces and instead optimises achieving the real goal of winning. 
 	\item[b)] 
 	As states, we would use the position of the arm. 
 	These are therefore discrete and finite.
@@ -59,6 +60,20 @@
 \end{enumerate}
 
 \section*{Task 2 - Value Functions}
+
+\begin{enumerate}
+	\item[1.]
+	
+	\item[2.]
+	
+	Definitions given in lecture: \\
+	$v_\pi (s) = \sum_{a}\pi (a|s) \sum_{s',r}p(s',r|s,a)[r+ \gamma v_\pi (s')] \ \ \forall s \in S$ \\
+	$q_\pi (s,a) = \sum_{s',r}p(s',r|s,a)[r+\gamma v_\pi (s')]$ \\
+	$\rightarrow $ insert $q_\pi (s,a)$ into $v_\pi (s)$: \\ 
+	$v_\pi (s) = \sum_{a}\pi (a|s) q_\pi (s,a)$
+	\item[3.]
+	$v_\pi (s) = \sum_{a}\pi (a|s) \sum_{s'}p(s'|s,a)[r(s,a,s')+ \gamma v_\pi (s')]$ \\
+\end{enumerate}
 
 \section*{Task 3 - Bruteforce the Policy Space}
 \subsection*{a)}

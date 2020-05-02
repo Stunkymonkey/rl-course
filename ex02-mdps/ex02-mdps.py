@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import gym
 import numpy as np
 
@@ -20,7 +22,7 @@ env = gym.make("FrozenLake-v0", desc=custom_map3x3)
 n_states = env.observation_space.n
 n_actions = env.action_space.n
 
-r = np.zeros(n_states) # the r vector is zero everywhere except for the goal state (last state)
+r = np.zeros(n_states)  # the r vector is zero everywhere except for the goal state (last state)
 r[-1] = 1.
 
 gamma = 0.8
@@ -50,26 +52,38 @@ def value_policy(policy):
     P = trans_matrix_for_policy(policy)
     # TODO: calculate and return v
     # (P, r and gamma already given)
-    return None
+    return np.matmul(np.linalg.inv(np.eye(n_states) - gamma * P), r)
 
 
 def bruteforce_policies():
     terms = terminals()
     optimalpolicies = []
 
-    policy = np.zeros(n_states, dtype=np.int)  # in the discrete case a policy is just an array with action = policy[state]
+    # in the discrete case a policy is just an array with action = policy[state]
+    policy = np.zeros(n_states, dtype=np.int)
     optimalvalue = np.zeros(n_states)
-    
-    # TODO: implement code that tries all possible policies, calculate the values using def value_policy. Find the optimal values and the optimal policies to answer the exercise questions.
 
-    print ("Optimal value function:")
+    # TODO: implement code that tries all possible policies, calculate the
+    # values using def value_policy. Find the optimal values and the optimal
+    # policies to answer the exercise questions.
+    for s in range(n_states):
+        if s in terms:
+            continue
+        action_values = []
+        for a in range(n_actions):
+            print("s", s, "   a", a, "  :")
+            print(policy)
+            action_values.append(value_policy(policy))
+        optimalvalue[s] = np.max(action_values)
+        policy[s] = np.argmax(action_values)
+
+    print("Optimal value function:")
     print(optimalvalue)
-    print ("number optimal policies:")
-    print (len(optimalpolicies))
-    print ("optimal policies:")
-    print (np.array(optimalpolicies))
+    print("number optimal policies:")
+    print(len(optimalpolicies))
+    print("optimal policies:")
+    print(np.array(optimalpolicies))
     return optimalpolicies
-
 
 
 def main():
@@ -84,25 +98,23 @@ def main():
 
     # Value functions:
     print("Value function for policy_left (always going left):")
-    print (value_policy(policy_left))
+    print(value_policy(policy_left))
     print("Value function for policy_right (always going right):")
-    print (value_policy(policy_right))
+    print(value_policy(policy_right))
 
     optimalpolicies = bruteforce_policies()
 
-
     # This code can be used to "rollout" a policy in the environment:
-    """
-    print ("rollout policy:")
+    print("rollout policy:")
     maxiter = 100
     state = env.reset()
     for i in range(maxiter):
         new_state, reward, done, info = env.step(optimalpolicies[0][state])
         env.render()
-        state=new_state
+        state = new_state
         if done:
-            print ("Finished episode")
-            break"""
+            print("Finished episode")
+            break
 
 
 if __name__ == "__main__":

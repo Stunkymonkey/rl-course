@@ -37,6 +37,7 @@ def value_iteration(max_iterations=10000):
         delta = np.abs(np.sum(np.array(V_states)) - np.sum(np.array(last_V_states)))
         if (delta < theta):
             print("#Steps to converge: ", i)
+            print(np.round(np.array(V_states), 3))
             break
                 
     return np.array(policy).astype(int)

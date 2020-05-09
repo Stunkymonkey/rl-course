@@ -31,6 +31,24 @@
 
 \section*{Task 1 - Proofs}
 
+\begin{enumerate}
+	\item[a)] $\text{Show that:} \left\Vert \mathcal{T}^\pi v - \mathcal{T}^\pi v' \right\Vert_\infty \leq \gamma \left \Vert v - v' \right \Vert_\infty$ \\ \linebreak
+	per definition: \\
+	$\begin{aligned}	
+		%\text{per definition:} 
+		\left\Vert \mathcal{T}^\pi v - \mathcal{T}^\pi v' \right\Vert_\infty  &= \max_s \left|(\mathcal{T}^\pi v )(s) -  (\mathcal{T}^\pi v' )(s) \right| \rightarrow \text{insert equation given on exercise sheet} \\
+		&= \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v(s')] - \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v'(s')] \right|  \\
+		&= \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v(s') - r - \gamma v'(s')] \right| \\
+		&= \gamma \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[v(s') - v'(s')] \right| \\
+		&\leq \gamma \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a) \max_s \left| [v(s') - v'(s')] \right| \right| \\
+		&= \gamma \max_s \left| v(s) - v(s') \right| \\
+		&= \gamma \left \Vert v - v' \right \Vert_\infty \\
+	\end{aligned}$
+	
+	\item[b)]
+	
+\end{enumerate}
+
 \section*{Task 2 - Value Iteration}
 
 \end{document}

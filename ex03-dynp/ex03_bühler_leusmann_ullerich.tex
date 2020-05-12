@@ -47,6 +47,14 @@
 	
 	\item[b)]
 	
+	Equation 1: $\frac{r_{min}}{1 - \gamma} \leq v(s) \leq \frac{r_{max}}{1 - \gamma}$ \\
+	Since $v(s)$ is defined as: $v(s) = E[R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... | S_t = s]$, we see that this is a geometric series, which converges for $\gamma < 1$. 
+	Therefore, since the reward is bounded, the lower bound converges to $\frac{r_{min}}{1 - \gamma}$.
+	Analogue for the upper bound. 
+	
+	The second equation follows from this statement. 
+	
+	
 \end{enumerate}
 
 \section*{Task 2 - Value Iteration}

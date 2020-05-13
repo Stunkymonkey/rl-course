@@ -31,6 +31,45 @@
 
 \section*{Task 1 - Proofs}
 
+\begin{enumerate}
+	\item[a)] $\text{Show that:} \left\Vert \mathcal{T}^\pi v - \mathcal{T}^\pi v' \right\Vert_\infty \leq \gamma \left \Vert v - v' \right \Vert_\infty$ \\ \linebreak
+	per definition: \\
+	$\begin{aligned}	
+		%\text{per definition:} 
+		\left\Vert \mathcal{T}^\pi v - \mathcal{T}^\pi v' \right\Vert_\infty  &= \max_s \left|(\mathcal{T}^\pi v )(s) -  (\mathcal{T}^\pi v' )(s) \right| \rightarrow \text{insert equation given on exercise sheet} \\
+		&= \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v(s')] - \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v'(s')] \right|  \\
+		&= \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[r+\gamma v(s') - r - \gamma v'(s')] \right| \\
+		&= \gamma \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a)[v(s') - v'(s')] \right| \\
+		&\leq \gamma \max_s \left| \sum_{a}\pi (a|s) \sum_{s',r}p(s',r |s,a) \max_s \left| [v(s') - v'(s')] \right| \right| \\
+		&= \gamma \max_s \left| v(s) - v(s') \right| \\
+		&= \gamma \left \Vert v - v' \right \Vert_\infty \\
+	\end{aligned}$
+	
+	\item[b)]
+	
+	Equation 1: $\frac{r_{min}}{1 - \gamma} \leq v(s) \leq \frac{r_{max}}{1 - \gamma}$ \\
+	Since $v(s)$ is defined as: $v(s) = E[R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... | S_t = s]$, we see that this is a geometric series, which converges for $\gamma < 1$. 
+	Therefore, since the reward is bounded, the lower bound converges to $\frac{r_{min}}{1 - \gamma}$.
+	Analogue for the upper bound. 
+	
+	The second equation follows from this statement. 
+	
+	
+\end{enumerate}
+
 \section*{Task 2 - Value Iteration}
+\begin{enumerate}
+	\item[a)] It takes 46 steps to converge. \\
+	Optimal value function:
+	$
+	\begin{matrix} 
+		0.015 & 0.016 & 0.027 & 0.016 \\
+		0.027 & 0.    & 0.06  & 0.    \\
+		0.058 & 0.134 & 0.197 & 0.    \\
+		0.    & 0.247 & 0.544 & 0.    \\ 
+	\end{matrix}
+	$
+	\item[b)] The optimal policy is: [1 3 2 3 0 0 0 0 3 1 0 0 0 2 1 0]
+\end{enumerate}
 
 \end{document}

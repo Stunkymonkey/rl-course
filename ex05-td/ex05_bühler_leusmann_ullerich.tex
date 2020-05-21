@@ -34,4 +34,66 @@
 
 \section*{Task 2 - Sarsa and Q-learning on the FrozenLake}
 
+\subsection*{a)}
+see Figure \ref{fig:sarsalength} \& Figure \ref{fig:sarsareward} \& Figure \ref{fig:sarsapolicy}.
+
+→ ↑ ← ↑
+← ← ← ←
+↓ ↓ ← ←
+← ↓ ↑ ←
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{4x4_sarsa_length}
+	\caption{Sarsa training length}
+	\label{fig:sarsalength}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{4x4_sarsa_v}
+	\caption{Sarsa V}
+	\label{fig:sarsareward}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{4x4_sarsa_q}
+	\caption{Sarsa Q}
+	\label{fig:sarsapolicy}
+\end{figure}
+
+
+\subsection*{b)}
+see Figure \ref{fig:qlearnlength} \& Figure \ref{fig:qlearnreward} \& Figure \ref{fig:qlearnpolicy}.
+
+↓ ↓ ↓ ↓
+↓ ← ↓ ←
+→ → ↓ ←
+← → ↓ ←
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\linewidth]{4x4_qlearn_length}
+	\caption{Q-Learning training length}
+	\label{fig:qlearnlength}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{4x4_qlearn_v}
+	\caption{Q-Learning V}
+	\label{fig:qlearnreward}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\linewidth]{4x4_qlearn_q}
+	\caption{Q-Learning Q}
+	\label{fig:qlearnpolicy}
+\end{figure}
+
+\subsection*{c)}
+
+No exploration is done, so the best neighbor is always chosen.
+
+\subsection*{d)}
+
+
 \end{document}

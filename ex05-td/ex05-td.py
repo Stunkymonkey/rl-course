@@ -94,6 +94,7 @@ def sarsa(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
     # TODO: implement the sarsa algorithm
 
     # This is some starting point performing random walks in the environment:
+    average_train_len = list()
     for i in range(num_ep):
         state = env.reset()
         done = False
@@ -101,33 +102,47 @@ def sarsa(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
             action = env.action_space.sample()
         else:
             action = np.argmax(Q[state, :])
+        counter = 0
         while not done:
             new_state, reward, done, _ = env.step(action)
             if np.random.uniform(0, 1) < epsilon:
                 new_action = env.action_space.sample()
             else:
                 new_action = np.argmax(Q[new_state, :])
-            Q[state, action] = Q[state, action] + alpha * (reward + gamma * Q[new_state, new_action] - Q[state, action])
+            Q[state, action] += alpha * (reward + gamma * Q[new_state, new_action] - Q[state, action])
             state = new_state
             action = new_action
+            counter += 1
+        average_train_len.append(counter)
+    fig = plt.figure()
+    ax = plt.axes()
+    ax.plot(list(range(len(average_train_len))), average_train_len)
+    plt.savefig("sarsa_length.png")
     return Q
 
 
 def qlearning(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
     Q = np.zeros((env.observation_space.n, env.action_space.n))
     # TODO: implement the qlearning algorithm
+    average_train_len = list()
     for i in range(num_ep):
         state = env.reset()
         done = False
+        counter = 0
         while not done:
             if np.random.uniform(0, 1) < epsilon:
                 action = env.action_space.sample()
             else:
                 action = np.argmax(Q[state, :])
             new_state, reward, done, _ = env.step(action)
-            Q[state, action] = Q[state, action] + alpha * \
-                (reward + gamma * np.max(Q[new_state, action] - Q[state, action]))
+            Q[state, action] += alpha * (reward + gamma * np.max(Q[new_state, action] - Q[state, action]))
             state = new_state
+            counter += 1
+        average_train_len.append(counter)
+    fig = plt.figure()
+    ax = plt.axes()
+    ax.plot(list(range(len(average_train_len))), average_train_len)
+    plt.savefig("qlearn_length.png")
     return Q
 
 
@@ -138,13 +153,17 @@ env = gym.make('FrozenLake-v0')
 print("Running sarsa...")
 Q = sarsa(env)
 plot_V(Q, env)
+plt.savefig("sarsa_v.png")
 plot_Q(Q, env)
+plt.savefig("sarsa_q.png")
 print_policy(Q, env)
-plt.show()
+# plt.show()
 
 print("Running qlearning")
 Q = qlearning(env)
 plot_V(Q, env)
+plt.savefig("qlearn_v.png")
 plot_Q(Q, env)
+plt.savefig("qlearn_q.png")
 print_policy(Q, env)
-plt.show()
+# plt.show()

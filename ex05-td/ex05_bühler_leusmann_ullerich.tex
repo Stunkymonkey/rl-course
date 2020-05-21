@@ -30,6 +30,12 @@
 \thispagestyle{fancy}
 
 \section*{Task 1 - Random Walk}
+\begin{itemize}
+	\item The first episode terminates in the left state.
+	\item The states are not yet visited or the ones visited are updated with TD error $ = 0 $\\
+	($ \rightarrow $ the values are not changing at all.)
+	\item $ V_{t+1}(A) = \alpha * (1 - V_t(A)) $ in our case: $ 0.1 * (1 - 0.5) = 0.05 $
+\end{itemize}
 
 
 \section*{Task 2 - Sarsa and Q-learning on the FrozenLake}

@@ -88,24 +88,26 @@ def plot_Q(Q, env):
     plt.yticks([])
 
 
-def sarsa(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
+def sarsa(env, name, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
     Q = np.zeros((env.observation_space.n, env.action_space.n))
-
     # TODO: implement the sarsa algorithm
+    Q.fill(0.5)
+    # make terminal states zero
+    Q[((env.desc == b'H') | (env.desc == b'G')).flatten(), :] = 0
 
-    # This is some starting point performing random walks in the environment:
     average_train_len = list()
+    current_average = 0
     for i in range(num_ep):
         state = env.reset()
         done = False
-        if np.random.uniform(0, 1) < epsilon:
+        if np.random.uniform(0, 1) <= epsilon:
             action = env.action_space.sample()
         else:
             action = np.argmax(Q[state, :])
         counter = 0
         while not done:
             new_state, reward, done, _ = env.step(action)
-            if np.random.uniform(0, 1) < epsilon:
+            if np.random.uniform(0, 1) <= epsilon:
                 new_action = env.action_space.sample()
             else:
                 new_action = np.argmax(Q[new_state, :])
@@ -113,57 +115,76 @@ def sarsa(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
             state = new_state
             action = new_action
             counter += 1
-        average_train_len.append(counter)
+        current_average = current_average + (counter - current_average) / (i + 1)
+        average_train_len.append(current_average)
     fig = plt.figure()
     ax = plt.axes()
     ax.plot(list(range(len(average_train_len))), average_train_len)
-    plt.savefig("sarsa_length.png")
+    plt.savefig(name + "sarsa_length.png")
     return Q
 
 
-def qlearning(env, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
+def qlearning(env, name, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
     Q = np.zeros((env.observation_space.n, env.action_space.n))
     # TODO: implement the qlearning algorithm
+    Q.fill(0.5)
+    # make terminal states zero
+    Q[((env.desc == b'H') | (env.desc == b'G')).flatten(), :] = 0
+
     average_train_len = list()
+    current_average = 0
     for i in range(num_ep):
         state = env.reset()
         done = False
         counter = 0
         while not done:
-            if np.random.uniform(0, 1) < epsilon:
+            if np.random.uniform(0, 1) <= epsilon:
                 action = env.action_space.sample()
             else:
                 action = np.argmax(Q[state, :])
             new_state, reward, done, _ = env.step(action)
-            Q[state, action] += alpha * (reward + gamma * np.max(Q[new_state, action] - Q[state, action]))
+            Q[state, action] += alpha * (reward + gamma * np.max(Q[new_state, :]) - Q[state, action])
             state = new_state
             counter += 1
-        average_train_len.append(counter)
+        current_average = current_average + (counter - current_average) / (i + 1)
+        average_train_len.append(current_average)
     fig = plt.figure()
     ax = plt.axes()
     ax.plot(list(range(len(average_train_len))), average_train_len)
-    plt.savefig("qlearn_length.png")
+    plt.savefig(name + "qlearn_length.png")
     return Q
 
 
-env = gym.make('FrozenLake-v0')
-# env = gym.make('FrozenLake-v0', is_slippery=False)
-# env = gym.make('FrozenLake-v0', map_name="8x8")
+def movingaverage(values, window):
+    weights = np.repeat(1.0, window) / window
+    sma = np.convolve(values, weights, 'valid')
+    return sma
 
-print("Running sarsa...")
-Q = sarsa(env)
-plot_V(Q, env)
-plt.savefig("sarsa_v.png")
-plot_Q(Q, env)
-plt.savefig("sarsa_q.png")
-print_policy(Q, env)
-# plt.show()
 
-print("Running qlearning")
-Q = qlearning(env)
-plot_V(Q, env)
-plt.savefig("qlearn_v.png")
-plot_Q(Q, env)
-plt.savefig("qlearn_q.png")
-print_policy(Q, env)
-# plt.show()
+envs = []
+envs.append(gym.make('FrozenLake-v0'))
+envs.append(gym.make('FrozenLake-v0', is_slippery=False))
+envs.append(gym.make('FrozenLake-v0', map_name="8x8"))
+names = []
+names.append("4x4_")
+names.append("det_")
+names.append("8x8_")
+
+for (env, name) in zip(envs, names):
+    print("Running sarsa...")
+    Q = sarsa(env, name)
+    plot_V(Q, env)
+    plt.savefig(name + "sarsa_v.png")
+    plot_Q(Q, env)
+    plt.savefig(name + "sarsa_q.png")
+    print_policy(Q, env)
+    # plt.show()
+
+    print("Running qlearning")
+    Q = qlearning(env, name)
+    plot_V(Q, env)
+    plt.savefig(name + "qlearn_v.png")
+    plot_Q(Q, env)
+    plt.savefig(name + "qlearn_q.png")
+    print_policy(Q, env)
+    # plt.show()

@@ -34,7 +34,7 @@
 	\item The first episode terminates in the left state.
 	\item The states are not yet visited or the ones visited are updated with TD error $ = 0 $\\
 	($ \rightarrow $ the values are not changing at all.)
-	\item $ V_{t+1}(A) = \alpha * (1 - V_t(A)) $ in our case: $ 0.1 * (1 - 0.5) = 0.05 $
+	\item $ V_{t+1}(A) = V_t(A) + \alpha * (R_{t+1} + \gamma V(terminal) - V_t(A)) $ in our case: $ 0.5 + 0.1 * (0 + 0 - 0.5) = 0.45 $
 \end{itemize}
 
 
@@ -46,72 +46,212 @@ see Figure \ref{fig:sarsalength} \& Figure \ref{fig:sarsareward} \& Figure \ref{
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{llll}
-		→ & ↑ & ← & ↑ \\
+		← & ↑ & ↓ & ↑ \\
 		← & ← & ← & ← \\
-		↓ & ↓ & ← & ← \\
-		← & ↓ & ↑ & ←
+		↑ & ↓ & ← & ← \\
+		← & → & ↑ & ←
 	\end{tabular}
 	\caption{Sarsa policy}
 \end{table}
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.8\linewidth]{4x4_sarsa_length}
 	\caption{Sarsa training length}
 	\label{fig:sarsalength}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{4x4_sarsa_v}
 	\caption{Sarsa V}
 	\label{fig:sarsareward}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{4x4_sarsa_q}
 	\caption{Sarsa Q}
 	\label{fig:sarsapolicy}
 \end{figure}
 
-
+\newpage
 \subsection*{b)}
+
+Sarsa follows a more saver policy (more exploration) then q-learning (more exploitation). Same as in the cliff example in the lecture Q-learning takes the optimal path which could end up in holes.
+
 see Figure \ref{fig:qlearnlength} \& Figure \ref{fig:qlearnreward} \& Figure \ref{fig:qlearnpolicy}.
 
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{llll}
-		↓ & ↓ & ↓ & ↓ \\
-		↓ & ← & ↓ & ← \\
-		→ & ← & ↓ & ← \\
-		← & → & ↓ & ←
+		↓ & ↑ & ← & ↑ \\
+		← & ← & ← & ← \\
+		↑ & ↓ & ← & ← \\
+		← & → & → & ←
 	\end{tabular}
 	\caption{Q-Learning policy}
 \end{table}
 
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.8\linewidth]{4x4_qlearn_length}
 	\caption{Q-Learning training length}
 	\label{fig:qlearnlength}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{4x4_qlearn_v}
 	\caption{Q-Learning V}
 	\label{fig:qlearnreward}
 \end{figure}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{4x4_qlearn_q}
 	\caption{Q-Learning Q}
 	\label{fig:qlearnpolicy}
 \end{figure}
 
+\newpage
 \subsection*{c)}
 
-No exploration is done, so the best neighbor is always chosen.
+An optimal policy gets calculated. This policy would not be optimal in a slippery environment.
 
+For Sarsa: see Figure \ref{fig:det_sarsalength} \& Figure \ref{fig:det_sarsareward} \& Figure \ref{fig:det_sarsapolicy}.
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{llll}
+		↓ & → & ↓ & ← \\
+		↓ & ← & ↓ & ← \\
+		→ & ↓ & ↓ & ← \\
+		← & → & → & ←
+	\end{tabular}
+	\caption{det Sarsa policy}
+\end{table}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{det_sarsa_length}
+	\caption{det Sarsa training length}
+	\label{fig:det_sarsalength}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{det_sarsa_v}
+	\caption{det Sarsa V}
+	\label{fig:det_sarsareward}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{det_sarsa_q}
+	\caption{det Sarsa Q}
+	\label{fig:det_sarsapolicy}
+\end{figure}
+~\\
+For Q-Learning: see Figure \ref{fig:det_qlearnlength} \& Figure \ref{fig:det_qlearnreward} \& Figure \ref{fig:det_qlearnpolicy}.
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{llll}
+		↓ & → & ↓ & ← \\
+		↓ & ← & ↓ & ← \\
+		→ & → & ↓ & ← \\
+		← & → & → & ←
+	\end{tabular}
+	\caption{det Q-Learning policy}
+\end{table}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{det_qlearn_length}
+	\caption{det Q-Learning training length}
+	\label{fig:det_qlearnlength}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{det_qlearn_v}
+	\caption{det Q-Learning V}
+	\label{fig:det_qlearnreward}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{det_qlearn_q}
+	\caption{det Q-Learning Q}
+	\label{fig:det_qlearnpolicy}
+\end{figure}
+
+\newpage
 \subsection*{d)}
 
+For Sarsa: see Figure \ref{fig:det_sarsalength} \& Figure \ref{fig:det_sarsareward} \& Figure \ref{fig:det_sarsapolicy}.
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{llllllll}
+		→ & → & → & → & → & → & → & ←\\
+		↑ & ↑ & ↑ & ↑ & → & → & → & ↓\\
+		↑ & → & ← & ← & → & ↑ & ↓ & ↓\\
+		→ & ↑ & ↑ & ↑ & ← & ← & → & ↓\\
+		→ & ← & ↑ & ← & → & ↓ & ↑ & →\\
+		← & ← & ← & ↓ & ↑ & ← & ← & →\\
+		← & ← & → & ← & ← & → & ← & →\\
+		↓ & ↑ & → & ← & → & → & ↓ & ←
+	\end{tabular}
+	\caption{8x8 Sarsa policy}
+\end{table}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{8x8_sarsa_length}
+	\caption{8x8 Sarsa training length}
+	\label{fig:8x8_sarsalength}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{8x8_sarsa_v}
+	\caption{8x8 Sarsa V}
+	\label{fig:8x8_sarsareward}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{8x8_sarsa_q}
+	\caption{8x8 Sarsa Q}
+	\label{fig:8x8_sarsapolicy}
+\end{figure}
+~\\
+For Q-Learning: see Figure \ref{fig:8x8_qlearnlength} \& Figure \ref{fig:8x8_qlearnreward} \& Figure \ref{fig:8x8_qlearnpolicy}.
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{llllllll}
+		↑ & → & → & → & → & → & → & →\\
+		↑ & ↑ & ↑ & ↑ & → & → & → & ↓\\
+		← & ← & ← & ← & → & ↑ & → & ↓\\
+		→ & ↑ & ↑ & ↑ & ← & ← & → & ↓\\
+		← & → & ↑ & ← & → & ↓ & ↑ & →\\
+		← & ← & ← & → & ↑ & ← & ← & →\\
+		← & ← & ↓ & ↓ & ← & ← & ← & →\\
+		↓ & ↑ & ← & ← & ↓ & → & ↓ & ←
+	\end{tabular}
+	\caption{8x8 Q-Learning policy}
+\end{table}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{8x8_qlearn_length}
+	\caption{8x8 Q-Learning training length}
+	\label{fig:8x8_qlearnlength}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{8x8_qlearn_v}
+	\caption{8x8 Q-Learning V}
+	\label{fig:8x8_qlearnreward}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{8x8_qlearn_q}
+	\caption{8x8 Q-Learning Q}
+	\label{fig:8x8_qlearnpolicy}
+\end{figure}
 
 \end{document}

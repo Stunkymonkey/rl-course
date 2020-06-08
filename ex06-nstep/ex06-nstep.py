@@ -20,6 +20,7 @@ def nstep_sarsa(env, n=1, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
 
         actions = [action]
         states = [state]
+        TD = []
         rewards = [0]
         while True:
             if t < T:
@@ -42,25 +43,33 @@ def nstep_sarsa(env, n=1, alpha=0.1, gamma=0.9, epsilon=0.1, num_ep=int(1e4)):
                     G += np.power(gamma, n) * Q_values[state_action[0]][state_action[1]]
                 state_action = (states[tau], actions[tau])
                 Q_values[state_action[0]][state_action[1]] += alpha * (G - Q_values[state_action[0]][state_action[1]])
+                TD.append(G)
 
             if tau == T - 1:
                 break
 
             t += 1
-    return Q_values
+    return Q_values, np.sqrt(np.mean(np.square(TD)))
 
 
 env = gym.make('FrozenLake-v0', map_name="8x8")
 # TODO: run multiple times, evaluate the performance for different n and alpha
-# print(nstep_sarsa(env, n=1, alpha=0.1))
+# print(nstep_sarsa(env, n=4, alpha=0.4, num_ep=10))
 
 true_state_values = np.arange(-20, 22, 2) / 20.0
 
 errors = dict()
-
+TD_n = []
+alpha_step = 31
 for n in np.power(2, range(10)):
-    for alpha in np.linspace(0, 1, 6):  # 11
-        errors[n] = nstep_sarsa(env, n=n, alpha=alpha)
+    TD_alpha = []
+    for alpha in np.linspace(0, 1, alpha_step):  # 11
+        _, TD_tmp_value = nstep_sarsa(env, n=n, alpha=alpha, num_ep=int(1e3))
+        TD_alpha.append(TD_tmp_value)
+    TD_n.append(TD_alpha)
 
-print(errors)
+for i in range(len(TD_n)):
+    plt.plot(np.linspace(0, 1, alpha_step), TD_n[i], label=i)
+plt.legend()
+plt.show()
 # plot

@@ -31,6 +31,20 @@
 
 \section*{Task 1 - Linear function approximation}
 
+\begin{enumerate}
+	\item[a)] The feature vector $x(s) = (x_1(s), ..., x_n(s))^T$ contains information about the state space. 
+	This information can be for example configurations of pieces in chess or the distance of a robot from the walls. 
+	Each entry represents one information.
+	We can construct a feature vector for tabular methods, as well. 
+	This vector would then be $x'(s) = ([s = s_1], ..., [s = s_n])^T$, where $[s = s_i]$ are indicator function which are 1 if we are in this state and 0 otherwise. 
+	Therefore, this vector would contain exactly one 1 at the state we are in and lots of 0s. 
+	If we multiply this by the weight vector, this would simply pick the weight corresponding to this state. 
+	This shows, that tabular methods are a special case of linear function approximation.
+	
+	\item[b)] 
+	
+\end{enumerate}
+
 
 \section*{Task 2 - Mountain Car}
 

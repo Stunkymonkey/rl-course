@@ -19,13 +19,13 @@ def get_discrete_state(state):
 
 # tune learning rate
 def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
-              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(10000)):
+              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(25000)):
 
     ep_rewards = []
     ep_lengths = []
     ep_goal = []
     aggr_ep_rewards = {'ep': [], 'avg': [], 'max': [], 'min': []}
-    aggr_ep_goal = {'ep': [], 'amount': []}
+    aggr_ep_goal = {'ep': [], 'goal': [], 'length': []}
 
     for episode in range(num_ep):
         episode_reward = 0
@@ -68,7 +68,7 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
 
         if not episode % STATS_EVERY:
             if episode == 0:
-                average_reward = sum(ep_rewards)
+                average_reward = ep_rewards[0]
             else:
                 average_reward = sum(ep_rewards[-STATS_EVERY:]) / STATS_EVERY
             aggr_ep_rewards['ep'].append(episode)
@@ -76,11 +76,16 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
             aggr_ep_rewards['max'].append(max(ep_rewards[-STATS_EVERY:]))
             aggr_ep_rewards['min'].append(min(ep_rewards[-STATS_EVERY:]))
             if episode == 0:
-                average_goal = sum(ep_goal)
+                average_goal = ep_goal[0]
             else:
                 average_goal = sum(ep_goal[-STATS_EVERY:]) / STATS_EVERY
+            if episode == 0:
+                average_length = ep_lengths[0]
+            else:
+                average_length = sum(ep_lengths[-STATS_EVERY:]) / STATS_EVERY
             aggr_ep_goal['ep'].append(episode)
-            aggr_ep_goal['amount'].append(average_goal)
+            aggr_ep_goal['goal'].append(average_goal)
+            aggr_ep_goal['length'].append(average_length)
             print(f'Episode: {episode:>5d}, average reward: {average_reward:>4.1f}, learning_rate: {learning_rate:>0.2f}')
 
     env.close()
@@ -97,14 +102,21 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
     # plt.show()
     plt.clf()
 
-    return aggr_ep_goal['ep'], aggr_ep_goal['amount']
+    return ep_goal, ep_lengths
 
 
 def main():
-    q_table = np.random.uniform(low=-2, high=0, size=(BUCKET_AMOUNT + [env.action_space.n]))
-    episodes, reached_goals = qlearning(env, q_table)
+    reached_goals = []
+    episode_lenghts = []
+    for i in range(10):
+        q_table = np.random.uniform(low=-2, high=0, size=(BUCKET_AMOUNT + [env.action_space.n]))
+        reached_goal, episode_lenght = qlearning(env, q_table)
+        reached_goals.append(reached_goal)
+        episode_lenghts.append(episode_lenght)
 
-    plt.plot(episodes, reached_goals, label="aggregated reaching goal of " + str(STATS_EVERY) + " episodes")
+    episodes = [i for i in range(np.mean(reached_goals, axis=0).shape[0])]
+    plt.plot(episodes, np.mean(reached_goals, axis=0),
+             label="aggregated reaching goal of " + str(STATS_EVERY) + " episodes")
     plt.legend(loc=2)
     plt.grid(True)
     plt.savefig('goal.png')

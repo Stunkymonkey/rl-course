@@ -10,7 +10,6 @@ STATS_EVERY = 50
 BUCKET_AMOUNT = [20, 20]
 env = gym.make('MountainCar-v0')
 BUCKET_SIZE = (env.observation_space.high - env.observation_space.low) / BUCKET_AMOUNT
-env.close()
 
 
 def get_discrete_state(state):
@@ -102,8 +101,6 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
 
 
 def main():
-    env = gym.make('MountainCar-v0')
-
     q_table = np.random.uniform(low=-2, high=0, size=(BUCKET_AMOUNT + [env.action_space.n]))
     episodes, reached_goals = qlearning(env, q_table)
 

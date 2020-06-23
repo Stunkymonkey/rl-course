@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 RENDER_EVERY = 2000
-STATS_EVERY = 20
+STATS_EVERY = 50
 
 BUCKET_AMOUNT = [20, 20]
 env = gym.make('MountainCar-v0')
@@ -20,7 +20,7 @@ def get_discrete_state(state):
 
 # tune learning rate
 def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
-              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(2e3)):
+              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(25000)):
 
     ep_rewards = []
     ep_lengths = []
@@ -33,7 +33,8 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
         episode_length = 0
         reached_goal = 0
 
-        discrete_state = get_discrete_state(env.reset())
+        state = env.reset()
+        discrete_state = get_discrete_state(state)
         done = False
 
         learning_rate = max(min_learning_rate, initial_learning_rate * (0.85 ** (episode // 100)))
@@ -47,7 +48,7 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
             new_state, reward, done, _ = env.step(action)
             new_discrete_state = get_discrete_state(new_state)
 
-            if (episode - 1) % RENDER_EVERY == 0:
+            if (episode + 1) % RENDER_EVERY == 0:
                 env.render()
 
             q_table[discrete_state + (action,)] += learning_rate * (reward + gamma *
@@ -81,7 +82,7 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
                 average_goal = sum(ep_goal[-STATS_EVERY:]) / STATS_EVERY
             aggr_ep_goal['ep'].append(episode)
             aggr_ep_goal['amount'].append(average_goal)
-            print(f'Episode: {episode:>5d}, average reward: {average_reward:>4.1f}')
+            print(f'Episode: {episode:>5d}, average reward: {average_reward:>4.1f}, learning_rate: {learning_rate:>0.2f}')
 
     env.close()
 

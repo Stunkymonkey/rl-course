@@ -19,7 +19,7 @@ def get_discrete_state(state):
 
 # tune learning rate
 def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
-              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(25000)):
+              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(10000)):
 
     ep_rewards = []
     ep_lengths = []
@@ -50,8 +50,6 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
             if (episode + 1) % RENDER_EVERY == 0:
                 env.render()
 
-            # q_table[discrete_state + (action,)] = (1 - learning_rate) * q_table[discrete_state + (action,)] + \
-            #     learning_rate * (reward + gamma * np.max(q_table[new_discrete_state]))
             q_table[discrete_state + (action,)] += learning_rate * (reward + gamma *
                                                                     np.max(q_table[new_discrete_state]) -
                                                                     q_table[discrete_state + (action,)])

@@ -19,7 +19,7 @@ def get_discrete_state(state):
 
 # tune learning rate
 def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
-              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(25000)):
+              initial_learning_rate=1.0, min_learning_rate=0.005, num_ep=int(5000)):
 
     ep_rewards = []
     ep_lengths = []
@@ -107,21 +107,28 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
 
 def main():
     reached_goals = []
-    episode_lenghts = []
+    episode_lengths = []
     for i in range(10):
         q_table = np.random.uniform(low=-2, high=0, size=(BUCKET_AMOUNT + [env.action_space.n]))
-        reached_goal, episode_lenght = qlearning(env, q_table)
+        reached_goal, episode_length = qlearning(env, q_table)
         reached_goals.append(reached_goal)
-        episode_lenghts.append(episode_lenght)
+        episode_lengths.append(episode_length)
+    env.close()
 
     episodes = [i for i in range(np.mean(reached_goals, axis=0).shape[0])]
-    plt.plot(episodes, np.mean(reached_goals, axis=0),
-             label="aggregated reaching goal of " + str(STATS_EVERY) + " episodes")
+
+    plt.plot(episodes, np.mean(reached_goals, axis=0), label="reaching goal")
     plt.legend(loc=2)
     plt.grid(True)
     plt.savefig('goal.png')
     # plt.show()
-    env.close()
+
+    plt.clf()
+    plt.plot(episodes, np.mean(episode_lengths, axis=0), label="episode length")
+    plt.legend(loc=2)
+    plt.grid(True)
+    plt.savefig('length.png')
+    # plt.show()
 
 
 if __name__ == "__main__":

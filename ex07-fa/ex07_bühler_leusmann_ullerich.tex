@@ -42,6 +42,24 @@
 	This shows, that tabular methods are a special case of linear function approximation.
 	
 	\item[b)] 
+	\begin{itemize}
+		\item tabular:
+		\begin{align*}
+				\delta_{t+1}(Q) &= R_{t+1} + \gamma Q(Y_{t+1}, A'_{t+1}) - Q(X_t, A_t) \\
+				Q_{t+1}(x, a) &= Q_t(x,a) + \alpha_t \delta_{t+1}(Q_t)\mathtt{I}_{x = X_t, a=A_t}\\		
+		\end{align*}
+		\item linear function approximation: 
+		%\begin{align*}
+		%	w_{t+1} &\doteq w_t + \alpha \delta_t z_t \\
+		%	\delta_t &\doteq R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}, w_t) - \hat{q}(S_t, A_t, w_t) \\
+		%	z_{-1} &\doteq 0 \\
+		%	z_t &\doteq \gamma \lambda z_{t-1} + \nabla \hat{q}(S_t, A_t, w_t), 0 \leq t \leq T
+		%\end{align*}
+		\begin{align*}
+			e_t &= \gamma \lambda e_{t-1} + \phi(s, a) \\
+			\theta_{t+1} &= \theta_{t} + \alpha_t e_t (r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t))\phi(s_t, a_t) \\
+		\end{align*}
+	\end{itemize}
 	
 \end{enumerate}
 

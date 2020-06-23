@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-RENDER_EVERY = 2000
+RENDER_EVERY = 200000
 STATS_EVERY = 50
 
 BUCKET_AMOUNT = [20, 20]
@@ -50,8 +50,10 @@ def qlearning(env, q_table, alpha=0.1, gamma=0.9, epsilon=0.1,
             if (episode + 1) % RENDER_EVERY == 0:
                 env.render()
 
+            # q_table[discrete_state + (action,)] = (1 - learning_rate) * q_table[discrete_state + (action,)] + \
+            #     learning_rate * (reward + gamma * np.max(q_table[new_discrete_state]))
             q_table[discrete_state + (action,)] += learning_rate * (reward + gamma *
-                                                                    np.max(q_table[new_discrete_state + (action,)]) -
+                                                                    np.max(q_table[new_discrete_state]) -
                                                                     q_table[discrete_state + (action,)])
 
             if new_state[0] >= env.goal_position:

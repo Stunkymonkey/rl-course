@@ -60,7 +60,7 @@ def REINFORCE(env):
 
         # TODO: implement the reinforce algorithm to improve the policy weights
 
-    plt.plot(mean_lengths['ep'], mean_lengths['length'], label="aggregated min rewards of 100 episodes")
+    plt.plot(mean_lengths['ep'], mean_lengths['length'], label="average episode length of 100 episodes")
     plt.legend(loc=2)
     plt.grid(True)
     plt.savefig('length.png')

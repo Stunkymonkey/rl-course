@@ -4,15 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def softmax(scores):
+def policy(state, theta):
+    """ return probabilities for actions under softmax action selection """
+    scores = state.dot(theta)
     e = np.exp(scores)
     s = e.sum()
     return e / s
-
-
-def policy(state, theta):
-    """ TODO: return probabilities for actions under softmax action selection """
-    return [0.5, 0.5]  # both actions with 0.5 probability => random
 
 
 def generate_episode(env, theta, display=False):

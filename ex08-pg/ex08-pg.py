@@ -1,6 +1,13 @@
+#!/usr/bin/env python3
 import gym
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+def softmax(scores):
+    e = np.exp(scores)
+    s = e.sum()
+    return e / s
 
 
 def policy(state, theta):

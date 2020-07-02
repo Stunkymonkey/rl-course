@@ -3,8 +3,8 @@ import gym
 import numpy as np
 import matplotlib.pyplot as plt
 
-gamma = 0.95
-alpha = 0.1
+gamma = 0.8
+alpha = 0.01
 
 
 def policy(state, theta):
@@ -49,8 +49,6 @@ def REINFORCE(env):
     mean_lengths = {'ep': [], 'length': []}
 
     for e in range(10000):
-        discount = 1
-
         if e % 300 == 0:
             states, rewards, actions = generate_episode(env, theta, True)  # display the policy every 300 episodes
         else:
@@ -68,7 +66,7 @@ def REINFORCE(env):
             mean_lengths['length'].append(average_length)
             print(f'Episode: {e:>5d}, average length: {average_length:>3.1f}')
 
-        # TODO: implement the reinforce algorithm to improve the policy weights
+        # implement the reinforce algorithm to improve the policy weights
         for t in range(len(states)):
             G = 0
             for k in range(t + 1, len(states)):

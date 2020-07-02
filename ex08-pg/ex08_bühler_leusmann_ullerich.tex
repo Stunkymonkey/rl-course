@@ -51,11 +51,13 @@ $\rightarrow$ gradient:
 \subsection*{b)}
 \begin{align*}
 	\nabla_{\theta} \log \pi (A_t | S_t, \theta) &= ... \\
-	%TODO (solution found online)
+	%TODO (solution found online, but maybe different)
 	 &= x(s, a) - \sum_{b}^{}(q_{\pi}(s, a) - b(s)) \nabla(a|s, \theta)
 \end{align*}
 
 \subsection*{c)}
+
+After 2700 episodes it reached over the score 495.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.7\linewidth]{length}
@@ -65,5 +67,10 @@ $\rightarrow$ gradient:
 
 \subsection*{d)}
 
+\begin{itemize}
+	\item REINFORCE with Baseline
+	\item reduce learning rate over time
+	\item different reward function where the amount of movement is lowering the reward
+\end{itemize}
 
 \end{document}

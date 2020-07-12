@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from fourrooms import FourRooms
 import matplotlib.pyplot as plt
 import numpy as np
@@ -6,6 +7,7 @@ from scipy.special import logsumexp, expit
 
 class SigmoidTermination():
     """ Sigmoid for option termination """
+
     def __init__(self, nstates):
         self.nstates = nstates
         self.weights = np.zeros((nstates,))
@@ -22,6 +24,7 @@ class SigmoidTermination():
 
 class SoftmaxPolicy():
     """ Softmax policy to select intra-option primitive actions"""
+
     def __init__(self, nstates, nactions, temperature=1.0):
         self.nstates = nstates
         self.nactions = nactions
@@ -29,7 +32,7 @@ class SoftmaxPolicy():
         self.weights = np.zeros((nstates, nactions))
 
     def pmf(self, state):
-        exponent = self.weights[state,:] / self.temperature
+        exponent = self.weights[state, :] / self.temperature
         return np.exp(exponent - logsumexp(exponent))
 
     def sample(self, state):
@@ -57,8 +60,8 @@ def plot_termination_maps(env, terminations):
         state = 0
         for i in range(13):
             for j in range(13):
-                if termination_maps[option][i,j] == 0:
-                    termination_maps[option][i,j] = terminations[option].pmf(state)
+                if termination_maps[option][i, j] == 0:
+                    termination_maps[option][i, j] = terminations[option].pmf(state)
                     state += 1
 
     for o_n, t in enumerate(termination_maps):
@@ -72,7 +75,7 @@ def option_critic(env):
     noptions = 4  # number of options
     nepisodes = 1000  # number of episodes
     nsteps = 1000  # max number of steps per episode
-    
+
     gamma = 0.99  # discount factor
     lr_term = 0.3  # learning rate for terminations
     lr_intra = 0.3  # learning rate for intra option policy
@@ -102,14 +105,23 @@ def option_critic(env):
             nextstate, reward, done, _ = env.step(action)  # perform action: observe nextstate, reward
 
             # TODO: 1. Options evaluation
+            target = reward
+            if not done:
+                beta_omega = option_terminations[option].pmf(nextstate)
+                target += gamma * (1.0 - beta_omega) * Q_omega[nextstate, option] + \
+                    gamma * beta_omega * np.max(Q_omega[nextstate, :])
 
+            Q_omega[state, option] += lr_critic * (target - Q_omega[state, option])
+            Q_U[state, option, action] += lr_critic * (target - Q_U[state, option, action])
 
             # TODO: 2. Options improvement
             # policies:
-            # you can access the weights using: option_policies[option].weights and the log gradient using option_policies[option].loggradient(state, action)
+            option_policies[option].weights += lr_intra * \
+                option_policies[option].loggradient(state, action) * Q_U[state, option, action]
             # terminations:
-            # you can access the weights using: option_terminations[option].weights and the gradient using option_terminations[option].gradient(state)
-            
+            option_terminations[option].weights -= lr_term * option_terminations[option].gradient(
+                nextstate) * (Q_omega[nextstate, option] - np.max(Q_omega[nextstate, :]))
+
             # when option terminates we select a new option
             if option_terminations[option].sample(nextstate):
                 option = policy_options(nextstate, Q_omega)
@@ -120,13 +132,11 @@ def option_critic(env):
                 break  # episode ends
 
         history[episode] = step
-        print (episode, step)
+        print(episode, step)
 
     plt.plot(history)
     plt.show()
     plot_termination_maps(env, option_terminations)
-
-
 
 
 def main():
@@ -134,7 +144,6 @@ def main():
     state = env.reset()
     print(state)
     option_critic(env)
-
 
 
 if __name__ == "__main__":

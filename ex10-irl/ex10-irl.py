@@ -2,6 +2,7 @@ import gym
 import numpy as np
 from itertools import product
 import matplotlib.pyplot as plt
+from collections import Counter
 
 
 def generate_demonstrations(env, expertpolicy, epsilon=0.1, n_trajs=100):
@@ -78,7 +79,27 @@ def main():
     expertpolicy = [0, 3, 0, 3, 0, 0, 0, 0, 3, 1, 0, 0, 0, 2, 1, 0]
     trajs = generate_demonstrations(env, expertpolicy, 0.1, 20)  # list of trajectories
     print("one trajectory is a list with (state, action) pairs:")
-    print (trajs[0])
+    # print (trajs[0])
+    # a) Count state action pairs
+    counter = Counter(trajs[0])
+    for traj in trajs[1:]:
+        counter.update(traj)
+
+    
+    sorted_counter = sorted(counter.items(), key=lambda pair: pair[0], reverse=False)
+    print("a): ", sorted_counter)
+    optimal_policy = [0, 3, 0, 3, 0, 0, 0, 0, 3, 1, 0, 0, 0, 2, 1, 0]
+    reward = 
+    # policy_dict = dict(zip(range(0,16), np.zeros(16)))
+ 
+    # for key, value in counter.items():
+    #     if value > policy_dict[key[0]]:
+    #         policy_dict[key[0]] = key[1]
+    # optimal_policy = []
+    # print(policy_dict)
+    
+ 
+
 
 
 
